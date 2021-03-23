@@ -1,0 +1,544 @@
+[
+    {
+        "id": "27c4fa0b.3a7306",
+        "type": "inject",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": ".1",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "43f111c5.3441d"
+            ]
+        ]
+    },
+    {
+        "id": "43f111c5.3441d",
+        "type": "function",
+        "z": "3ebc9681.25b58a",
+        "name": "setHeaders",
+        "func": "var Login = 'wattbox:wattbox';\nlet auth = Login.toString('base64');\n\nmsg.headers = {\n    \"Keep-Alive\": \"300\",\n    \"Connection\": \"keep-alive\",\n    \"Authorization\": \"Basic \" + auth + \"==\",\n    \"User-Agent\": \"APP\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 340,
+        "wires": [
+            [
+                "fd389995.1b4028"
+            ]
+        ]
+    },
+    {
+        "id": "fd389995.1b4028",
+        "type": "http request",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "http://INSERT IP HERE/wattbox_info.xml",
+        "tls": "",
+        "proxy": "",
+        "authType": "basic",
+        "x": 550,
+        "y": 340,
+        "wires": [
+            [
+                "f7891727.3a0678",
+                "30b99abd.041806"
+            ]
+        ]
+    },
+    {
+        "id": "f7891727.3a0678",
+        "type": "xml",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "property": "payload",
+        "attr": "",
+        "chr": "",
+        "x": 750,
+        "y": 340,
+        "wires": [
+            [
+                "e9d76e66.f5562",
+                "dbbcd122.ec87f",
+                "1fba9af.dcce865",
+                "ae4c6c28.71b5c",
+                "ad9fa8e0.02a118",
+                "8e8eb28.1d8345",
+                "f95cf65c.347608",
+                "2b84925e.009ace",
+                "7aeafb9.9ee0f04"
+            ]
+        ]
+    },
+    {
+        "id": "30b99abd.041806",
+        "type": "debug",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 730,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e9d76e66.f5562",
+        "type": "function",
+        "z": "3ebc9681.25b58a",
+        "name": "120VAC Voltage",
+        "func": "msg.payload = msg.payload.request.voltage_value * 0.1;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1020,
+        "y": 300,
+        "wires": [
+            [
+                "9c25d0ed.fcbe4"
+            ]
+        ]
+    },
+    {
+        "id": "dbbcd122.ec87f",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Hostname",
+        "label": "Hostname",
+        "format": "{{msg.payload.request.host_name[0]}}",
+        "layout": "row-spread",
+        "x": 1010,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "1fba9af.dcce865",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Hardware Version",
+        "label": "Hardware Version",
+        "format": "{{msg.payload.request.hardware_version[0]}}",
+        "layout": "row-spread",
+        "x": 1030,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "ae4c6c28.71b5c",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "Serial Number",
+        "label": "Serial Number",
+        "format": "{{msg.payload.request.serial_number[0]}}",
+        "layout": "row-spread",
+        "x": 1020,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "ad9fa8e0.02a118",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Auto Reboot",
+        "label": "Auto Reboot",
+        "format": "{{msg.payload.request.auto_reboot[0]}}",
+        "layout": "row-spread",
+        "x": 1010,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "8e8eb28.1d8345",
+        "type": "ui_gauge",
+        "z": "3ebc9681.25b58a",
+        "name": "120VAC Current",
+        "group": "7b10f148.d9e4a",
+        "order": 6,
+        "width": "4",
+        "height": "3",
+        "gtype": "gage",
+        "title": "120VAC Current",
+        "label": "A",
+        "format": "{{msg.payload.request.current_value[0]}}",
+        "min": 0,
+        "max": "20",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "15",
+        "seg2": "18",
+        "x": 1020,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "f95cf65c.347608",
+        "type": "ui_gauge",
+        "z": "3ebc9681.25b58a",
+        "name": "120VAC Power",
+        "group": "7b10f148.d9e4a",
+        "order": 7,
+        "width": "4",
+        "height": "3",
+        "gtype": "gage",
+        "title": "120VAC Power",
+        "label": "Watts",
+        "format": "{{msg.payload.request.power_value[0]}}",
+        "min": 0,
+        "max": "500",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "250",
+        "seg2": "350",
+        "x": 1020,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "2b84925e.009ace",
+        "type": "function",
+        "z": "3ebc9681.25b58a",
+        "name": "outlet_status",
+        "func": "msg.payload = msg.payload.request.outlet_status[0] + \",\" + msg.payload.request.outlet_name[0];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1010,
+        "y": 540,
+        "wires": [
+            [
+                "498cd373.c5feac"
+            ]
+        ]
+    },
+    {
+        "id": "7aeafb9.9ee0f04",
+        "type": "function",
+        "z": "3ebc9681.25b58a",
+        "name": "set vars",
+        "func": "global.set('voltage', (msg.payload.request.voltage_value[0] * 0.1));\nglobal.set('current', parseInt(msg.payload.request.current_value[0]));\nglobal.set('power', parseInt(msg.payload.request.power_value[0]));",
+        "outputs": 0,
+        "noerr": 0,
+        "x": 1000,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "9c25d0ed.fcbe4",
+        "type": "ui_gauge",
+        "z": "3ebc9681.25b58a",
+        "name": "120VAC Voltage",
+        "group": "7b10f148.d9e4a",
+        "order": 5,
+        "width": "4",
+        "height": "3",
+        "gtype": "gage",
+        "title": "120VAC Voltage",
+        "label": "V",
+        "format": "{{value}}",
+        "min": "110",
+        "max": "130",
+        "colors": [
+            "#b50000",
+            "#00b20e",
+            "#b50000"
+        ],
+        "seg1": "115",
+        "seg2": "125",
+        "x": 1220,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "498cd373.c5feac",
+        "type": "csv",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "outlet_1, outlet_2, outlet_3, outlet_1_name, outlet_2_name, outlet_3_name",
+        "skip": "0",
+        "x": 1170,
+        "y": 540,
+        "wires": [
+            [
+                "ec342b80.38a758"
+            ]
+        ]
+    },
+    {
+        "id": "ec342b80.38a758",
+        "type": "split",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "x": 1310,
+        "y": 540,
+        "wires": [
+            [
+                "5f33a10e.d94fe"
+            ]
+        ]
+    },
+    {
+        "id": "5f33a10e.d94fe",
+        "type": "switch",
+        "z": "3ebc9681.25b58a",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "outlet_1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "outlet_2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "outlet_3",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "outlet_1_name",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "outlet_2_name",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "outlet_3_name",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 6,
+        "x": 1470,
+        "y": 540,
+        "wires": [
+            [
+                "9110a8b6.293578"
+            ],
+            [
+                "3b2d44da.37fcdc"
+            ],
+            [
+                "c86b7012.1c387"
+            ],
+            [
+                "3aa09861.04f938"
+            ],
+            [
+                "b090ddf8.4b6b6"
+            ],
+            [
+                "809b9078.4d524"
+            ]
+        ]
+    },
+    {
+        "id": "9110a8b6.293578",
+        "type": "ui_led",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 9,
+        "width": "1",
+        "height": "1",
+        "label": "",
+        "labelPlacement": "right",
+        "labelAlignment": "right",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "0",
+                "valueType": "num"
+            },
+            {
+                "color": "green",
+                "value": "1",
+                "valueType": "num"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Outlet 1 Status",
+        "x": 1700,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "3b2d44da.37fcdc",
+        "type": "ui_led",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 12,
+        "width": "1",
+        "height": "1",
+        "label": "",
+        "labelPlacement": "right",
+        "labelAlignment": "right",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "0",
+                "valueType": "num"
+            },
+            {
+                "color": "green",
+                "value": "1",
+                "valueType": "num"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Outlet 2 Status",
+        "x": 1700,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "c86b7012.1c387",
+        "type": "ui_led",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 15,
+        "width": "1",
+        "height": "1",
+        "label": "",
+        "labelPlacement": "right",
+        "labelAlignment": "right",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "0",
+                "valueType": "num"
+            },
+            {
+                "color": "green",
+                "value": "1",
+                "valueType": "num"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Outlet 3 Status",
+        "x": 1700,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "3aa09861.04f938",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 8,
+        "width": "6",
+        "height": "1",
+        "name": "Outlet 1 Name",
+        "label": "Outlet 1 Name",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1700,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "b090ddf8.4b6b6",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 11,
+        "width": "6",
+        "height": "1",
+        "name": "Outlet 2 Name",
+        "label": "Outlet 2 Name",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1700,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "809b9078.4d524",
+        "type": "ui_text",
+        "z": "3ebc9681.25b58a",
+        "group": "7b10f148.d9e4a",
+        "order": 14,
+        "width": "6",
+        "height": "1",
+        "name": "Outlet 3 Name",
+        "label": "Outlet 3 Name",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1700,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "7b10f148.d9e4a",
+        "type": "ui_group",
+        "z": "",
+        "name": "WATTBOX",
+        "tab": "7bc40979.b610d8",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "7bc40979.b610d8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "POWER",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]

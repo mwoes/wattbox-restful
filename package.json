@@ -1,0 +1,30 @@
+{
+  "name": "wattbox",
+  "version": "2.0.0",
+  "description": "Node.js API to interact with SnapAV Wattbox devices compatible with Wattbox Web API v2.0",
+  "main": "wbAPI.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mwoes/wattbox-node.git"
+  },
+  "keywords": [
+    "wattbox",
+    "snapav",
+    "iot",
+    "power",
+    "control",
+    "pmu",
+    "psu",
+    "ping",
+    "pdu"
+  ],
+  "author": "Mason Woessner",
+  "license": "ISC",
+  "dependencies": {
+    "fast-xml-parser": "^3.12.16",
+    "http": "0.0.0"
+  }
+}
